@@ -1,10 +1,19 @@
+"""
+Daemon watching for sensors
+"""
+
 import sensors
 from time import sleep
+from multiprocessing import Process
 
+"ACPI sensors list"
 WATCH_LIST = ["k8temp", ]
 LOG_PATH_FORMAT = "/tmp/smarthouse/sensor_%s"
 
-def api_sensors():
+"""
+ACPI sensors (e.g., computer internal temperature)
+"""
+def sensors_acpi():
     sensors.init()
     try:
         while True:
@@ -22,4 +31,7 @@ def api_sensors():
         
 
 if __name__ == '__main__':
-    api_sensors()
+    local = locals()
+    functions = filter(lambda x: x.startswith("sensors_"), local)
+    [Process(target=local[func]).start() for func in functions]
+
