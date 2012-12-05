@@ -1,1 +1,21 @@
-Hello world!!
+<!doctype html>
+<html lang="ru">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <ul id="sensors">
+    {% for sensor in data %}
+        <li>
+        	<b>{{ sensor.name }}</b>
+        	<ul class="sensor_data">
+        	{% for value in sensor.data %}
+        		<li> <i>{{ value[0] }}</i>: {{ value[1] }} </li>
+        	{% endfor %}
+        	<ul>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

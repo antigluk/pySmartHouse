@@ -2,6 +2,7 @@ import sensors
 from time import sleep
 
 WATCH_LIST = ["k8temp", ]
+LOG_PATH_FORMAT = "/tmp/smarthouse/sensor_%s"
 
 def api_sensors():
     sensors.init()
@@ -9,7 +10,7 @@ def api_sensors():
         while True:
             for sensor in sensors.iter_detected_chips():
                 if sensor.prefix in WATCH_LIST:
-                    wfile = file("/tmp/smarthouse/sensor_%s" % sensor.prefix, "w")
+                    wfile = file(LOG_PATH_FORMAT % sensor.prefix, "w")
                     #MONGO?
                     for feature in sensor:
                         print "%s: %s=%s" % (sensor.prefix, feature.name, feature.get_value())
