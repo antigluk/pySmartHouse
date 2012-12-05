@@ -9,7 +9,7 @@ from multiprocessing import Process
 import serial
 
 "ACPI sensors list"
-WATCH_LIST = ["k8temp", "coretemp", "via686a", ]
+WATCH_LIST = ["k8temp", "coretemp", "via686a", "msp430"]
 LOG_PATH_FORMAT = "/tmp/smarthouse/sensor_%s"
 
 """
