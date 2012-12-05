@@ -7,7 +7,7 @@ from time import sleep
 from multiprocessing import Process
 
 "ACPI sensors list"
-WATCH_LIST = ["k8temp", ]
+WATCH_LIST = ["k8temp", "coretemp"]
 LOG_PATH_FORMAT = "/tmp/smarthouse/sensor_%s"
 
 """
@@ -15,6 +15,7 @@ ACPI sensors (e.g., computer internal temperature)
 """
 def sensors_acpi():
     sensors.init()
+    print list(sensors.iter_detected_chips())
     try:
         while True:
             for sensor in sensors.iter_detected_chips():

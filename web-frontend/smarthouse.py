@@ -7,6 +7,7 @@ from flask import Flask, render_template
 import watch
 
 import sh
+import os
 
 app = Flask(__name__)
 
@@ -19,8 +20,10 @@ def get_info():
 def index():
     sensors = []
     for sensor in watch.WATCH_LIST:
-        data = file(watch.LOG_PATH_FORMAT % sensor).readlines()
-        sensors.append({"name":sensor, "data":[line.strip().split("=") for line in data]})
+        file_name = watch.LOG_PATH_FORMAT % sensor
+        if os.path.exists(file_name):
+            data = file(file_name).readlines()
+            sensors.append({"name":sensor, "data":[line.strip().split("=") for line in data]})
 
     return render_template("index.html", data=sensors, info=get_info())
 
