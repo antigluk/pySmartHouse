@@ -1,3 +1,4 @@
 #!/bin/bash
 
 /home/aiko/frontend/.env/bin/python /home/aiko/watch/watch.py &>/dev/null &
+/home/aiko/frontend/.env/bin/python /home/aiko/pysmarthouse/web-frontend/smarthouse.py &
