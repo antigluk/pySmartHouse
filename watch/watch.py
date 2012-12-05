@@ -7,7 +7,7 @@ from time import sleep
 from multiprocessing import Process
 
 "ACPI sensors list"
-WATCH_LIST = ["k8temp", "coretemp"]
+WATCH_LIST = ["k8temp", "coretemp", "via686a", ]
 LOG_PATH_FORMAT = "/tmp/smarthouse/sensor_%s"
 
 """
