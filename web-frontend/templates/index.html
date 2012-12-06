@@ -1,23 +1,52 @@
 <!doctype html>
 <html lang="ru">
 <head>
-    <title></title>
+    <title>SmartHouse {{ info.version }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+
+      /* Custom container */
+      .container-narrow {
+        margin: 0 auto;
+        max-width: 700px;
+      }
+      .container-narrow > hr {
+        margin: 30px 0;
+      }
+    </style>
 </head>
 <body>
-	<h1>SmartHouse system</h1><br />
-	Running on {{ info.host }}/{{ info.ip }} host <br />
-    <ul id="sensors">
-    {% for sensor in data %}
-        <li>
-        	<b>{{ sensor.name }}</b>
-        	<ul class="sensor_data">
-        	{% for value in sensor.data %}
-        		<li> <i>{{ value[0] }}</i>: {{ value[1] }} </li>
-        	{% endfor %}
-        	</ul>
-        </li>
-    {% endfor %}
-    </ul>
+    <div class="container-narrow">
+        <h1>SmartHouse system</h1><br />
+        <div class="well">Running on {{ info.host }}/{{ info.ip }} host </div>
+        <!-- <div id="sensors"> -->
+        {% for sensor in data %}
+            <div class="well">
+                <h2>{{ sensor.name }}</h2>
+                <table class="table table-striped">
+                <ul class="sensor_data">
+                {% for value in sensor.data %}
+                    <tr> <td>{{ value[0] }}</td> <td>{{ value[1] }} </td>
+                {% endfor %}
+                </table>
+            </div>
+        {% endfor %}
+        <!-- </div> -->
+
+      <hr>
+
+      <div class="footer">
+        <p>&copy; Antigluk 2012</p>
+      </div>
+    </div> <!-- /container -->
+
+    <script src="/static/js/jquery-1.8.3.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

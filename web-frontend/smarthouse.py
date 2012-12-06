@@ -15,6 +15,7 @@ app = Flask(__name__)
 def get_info():
     return {"host": sh.hostname().strip(),
             "ip": sh.hostname("-i").strip(),
+            "version": "0.0.1",
             }
 
 @app.route("/")
