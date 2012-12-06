@@ -29,19 +29,29 @@
 #include "uart_fifo.h"
 #include "temp.h"
 
+#define DOOR BIT7
+
+#define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
+
 void main(void)
 {
   WDTCTL = WDTPW + WDTHOLD;                 // Stop WDT
   BCSCTL1 = CALBC1_8MHZ; 				//Set DCO to 8Mhz
   DCOCTL = CALDCO_8MHZ; 				//Set DCO to 8Mhz
+  P1DIR = 0x00;
+  P2DIR = 0x00;
+  P3DIR = 0x00;
+
   uart_init();
   __enable_interrupt();				//Interrupts Enabled
   temp_init();
+
   long Temp = 0;
   for(;;) {
 	char x = uart_getc();
 	Temp = temp_measure();
-	uart_printf("T1\t%i\n\r", Temp);
+//	int D1 = CHECK_BIT(P1IN, 7);
+	uart_printf("T1\t%i;P1\t%i;P2\t%i;P3\t%i\n\r", Temp, P1IN, P2IN, P3IN);
 	__delay_cycles(5000000);
   }
   return;
