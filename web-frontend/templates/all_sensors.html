@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}All sensors - {% endblock %}
+
+{% block content %}
+  <div class="alert alert-info">Running on {{ info.host }}/{{ info.ip }} host </div>
+
+  <div class="accordion" id="accordion2">
+  {% for sensor in data %}
+      <div class="accordion-group">
+          <div class="accordion-heading">
+              <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse{{ loop.index }}">{{ sensor.name }}</a>
+          </div>
+          <div id="collapse{{ loop.index }}" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <table class="table table-striped">
+              {% for value in sensor.data %}
+                  <tr> <td width="33%">{{ value[0] }}</td> <td>{{ value[1] }} </td>
+              {% endfor %}
+              </table>
+            </div>
+          </div>
+      </div>
+  {% endfor %}
+  </div>
+{% endblock %}
