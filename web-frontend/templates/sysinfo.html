@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Home - {% endblock %}
+
+{% block content %}
+<div class="well">
+    <table class="table">
+    {% for i in info %}
+    <tr>
+    <td>{{ i }}</td>
+    <td><pre>{{ info[i] }}</pre></td>
+    </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

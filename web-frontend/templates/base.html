@@ -50,7 +50,7 @@
             <ul class="nav">
               <li><a href="/">Home</a></li>
               <li><a href="/all">All sensors</a></li>
-              <!-- <li><a href="#about">About</a></li> -->
+              <li><a href="/info">System info</a></li>
               <!-- <li><a href="#contact">Contact</a></li> -->
             </ul>
           </div><!--/.nav-collapse -->
@@ -60,14 +60,14 @@
 
 
 
-    <div class="container-narrow">
+    <div class="container">
         {% block content %}
         {% endblock %}
 
       <hr>
 
       <div class="footer">
-        <p>&copy; Antigluk 2012</p>
+        <p>&copy; Antigluk 2012<br />{{ info.host }}/{{ info.ip }}</p>
       </div>
     </div> <!-- /container -->
 

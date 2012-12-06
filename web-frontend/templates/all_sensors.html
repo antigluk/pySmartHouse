@@ -3,7 +3,11 @@
 {% block title %}All sensors - {% endblock %}
 
 {% block content %}
-  <div class="alert alert-info">Running on {{ info.host }}/{{ info.ip }} host </div>
+  {% if "msp430" in info %}
+  <div class="alert alert-success">msp430 подключен на порт {{ info.msp430.port }} </div>
+  {% else %}
+  <div class="alert alert-error">Похоже msp430 не подключен...</div>
+  {% endif %}
 
   <div class="accordion" id="accordion2">
   {% for sensor in data %}

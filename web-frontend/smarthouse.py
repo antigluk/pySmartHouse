@@ -2,7 +2,7 @@
 Front-end web application, shows sensors and allow some control
 """
 
-from flask import Flask, render_template
+from flask import Flask, render_template, Markup
 
 from watchd import LOG_PATH
 
@@ -15,6 +15,8 @@ import struct
 
 app = Flask(__name__)
 
+MSP430SERIAL = "/dev/ttyACM0"
+
 def get_ip_address(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     return socket.inet_ntoa(fcntl.ioctl(
@@ -23,7 +25,7 @@ def get_ip_address(ifname):
         struct.pack('256s', ifname[:15])
     )[20:24])
 
-def get_info():
+def get_info(wide=False):
     try:
         ip = get_ip_address("eth0")
     except IOError:
@@ -34,10 +36,19 @@ def get_info():
                 ip = get_ip_address("lo")
             except IOError:
                 ip = "0.0.0.0"
-    return {"host": sh.hostname().strip(),
+    f = {
+            "host": sh.hostname().strip(),
             "ip": ip,#sh.hostname("-i").strip(),
             "version": "0.0.1",
-            }
+        }
+    if os.path.exists(MSP430SERIAL):
+        f.update({"msp430" : {"port": MSP430SERIAL}})
+    if wide:
+        f.update({
+                "ifconfig" : sh.ifconfig(),
+                "route" : sh.route(),
+            })
+    return f
 
 @app.route("/all")
 def all_sensors():
@@ -66,6 +77,9 @@ def index():
 
     return render_template("index.html", data=sensors, info=get_info())
 
+@app.route("/info")
+def sysinfo():
+    return render_template("sysinfo.html", info=get_info(wide=True))
 
 if __name__ == "__main__":
     app.run(debug = False, host='0.0.0.0')
