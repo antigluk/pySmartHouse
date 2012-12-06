@@ -4,7 +4,7 @@ Front-end web application, shows sensors and allow some control
 
 from flask import Flask, render_template
 
-from watchd import watch, LOG_PATH, LOG_PATH_FORMAT
+from watchd import LOG_PATH
 
 import sh
 import os
@@ -43,4 +43,4 @@ def index():
     return render_template("index.html", data=sensors, info=get_info())
 
 if __name__ == "__main__":
-    app.run(debug = True, host='0.0.0.0')
+    app.run(debug = False, host='0.0.0.0')
