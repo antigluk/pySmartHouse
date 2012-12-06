@@ -1,0 +1,21 @@
+<VirtualHost *>
+    ServerName smarthouse
+
+    WSGIDaemonProcess smarthouse user=aiko group=aiko threads=5
+    WSGIScriptAlias / /home/aiko/frontend/smarthouse.wsgi
+
+    <Directory /home/aiko/frontend>
+        WSGIProcessGroup smarthouse
+        WSGIApplicationGroup %{GLOBAL}
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+    Alias /static/ /home/aiko/frontend/static/
+
+    <Directory /home/aiko/frontend/static>
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+</VirtualHost>

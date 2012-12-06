@@ -2,4 +2,3 @@
 
 mkdir /tmp/smarthouse
 /home/aiko/frontend/.env/bin/python /home/aiko/watchd/watch.py &>/dev/null &
-/home/aiko/frontend/.env/bin/python /home/aiko/frontend/smarthouse.py &
