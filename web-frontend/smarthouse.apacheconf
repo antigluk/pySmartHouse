@@ -18,4 +18,7 @@
         Allow from all
     </Directory>
 
+    LogLevel info
+    ErrorLog /home/aiko/error.log
+
 </VirtualHost>
