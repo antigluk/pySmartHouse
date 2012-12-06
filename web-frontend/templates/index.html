@@ -4,6 +4,6 @@
 
 {% block content %}
 <div class="well">
-    Температура в подсобке: {% if "msp430" in data %} {{ data.msp430.T1 }} {% else %} N/A {% endif %}
+    Температура в подсобке: {% if "msp430" in data %} {{ data.msp430.T1 }}&deg;С {% else %} N/A {% endif %}
 </div>
 {% endblock %}
