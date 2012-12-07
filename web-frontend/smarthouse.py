@@ -16,7 +16,6 @@ import fnmatch
 import socket
 import fcntl
 import struct
-import numpy
 
 from sqlite3dbm import sshelve as sqlite
 
