@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ device_name }}/{{ sensor_name }} - {% endblock %}
+
+{% block head %}
+<script type="application/javascript" src="/static/js/awesomechart.js"></script>
+<script type="application/javascript">
+      function drawMyChart(){
+        if(!!document.createElement('canvas').getContext){ //check that the canvas
+                                                           // element is supported
+            var mychart = new AwesomeChart('canvas1');
+            mychart.title = "{{device_name}} / {{sensor_name}}";
+            mychart.data = {{ data.y|safe }};
+            mychart.labels = {{ data.x|safe }};
+            // mychart.chartType = '';
+            mychart.draw();
+        }
+      }
+      
+      window.onload = drawMyChart;
+    </script>
+{% endblock %}
+
+{% block content %}
+
+<h2>{{device_name}}/{{sensor_name}}</h2>
+
+<canvas id="canvas1" width="600" height="300">
+	Your web-browser does not support the HTML 5 canvas element.
+</canvas>
+{% endblock %}

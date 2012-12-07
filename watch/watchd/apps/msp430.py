@@ -24,7 +24,7 @@ def msp430():
                     for sensor in line.split(';'):
                         name, value = sensor.split('\t')
 
-                    db[time()] = \
+                    db[int(time())] = \
                       [tuple(sensor.split('\t')) for sensor in line.split(';')]
 
                     sleep(2)

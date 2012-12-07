@@ -1,8 +1,10 @@
+#-*- coding: utf8 -*-
+
 """
 Front-end web application, shows sensors and allow some control
 """
 
-from flask import Flask, render_template, Markup
+from flask import Flask, render_template
 
 from watchd import LOG_PATH
 
@@ -64,11 +66,48 @@ def all_sensors():
         file_name = os.path.join(LOG_PATH, sensor)
 
         if os.path.exists(file_name):
-            data = sqlite.open(file_name).getlast()
+            data = sqlite.open(file_name).getlast()[0][1]
             sensors.append({"name":sensor[len("sensor_"):], "data":data})
 
     return render_template("all_sensors.html", data=sensors, info=get_info())
 
+@app.route("/charts/")
+def charts_list():
+    sensors = []
+    for sensor in os.listdir(LOG_PATH):
+        if not fnmatch.fnmatch(sensor, 'sensor_*'):
+            continue
+        sensors.append(sensor)
+
+    return render_template("sensors_list.html", charts=sensors, info=get_info())
+
+@app.route("/charts/<device>")
+def chart_sensors(device):
+    file_name = os.path.join(LOG_PATH, device)
+    if os.path.exists(file_name):
+        data = sqlite.open(file_name).getlast()[0][1]
+        return render_template("device_sensors.html", device_name=device,
+                               sensors=sorted(dict(data).keys()), info=get_info())
+    # return render_template("chart.html", sensor={'name': device}, info=get_info())
+
+
+@app.route("/charts/<device>/<sensor>")
+def chart(device, sensor):
+    file_name = os.path.join(LOG_PATH, device)
+    if os.path.exists(file_name):
+        data = sqlite.open(file_name).getlast(1000)[::100]
+        # data.reverse()
+        # print data
+        keys = [int(v[0]) for v in data]
+        keys = ["-%d min" % ((v-min(keys))/60) for v in keys]
+        return render_template("chart.html", device_name=device,
+            sensor_name=sensor,
+            data={
+                'x':keys,
+                'y':[dict(v[1])[sensor] for v in data],
+                  },
+            info=get_info())
+    # return render_template("chart.html", sensor={'name': device}, info=get_info())
 
 @app.route("/")
 def index():
@@ -78,7 +117,7 @@ def index():
             continue
         file_name = os.path.join(LOG_PATH, sensor)
         if os.path.exists(file_name):
-            data = sqlite.open(file_name).getlast()
+            data = sqlite.open(file_name).getlast()[0][1]
             sensors.update({sensor[len("sensor_"):]: dict(data)})
 
     return render_template("index.html", data=sensors, info=get_info())

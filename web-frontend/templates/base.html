@@ -34,9 +34,10 @@
             // setTimeout("location.reload(true);",timeoutPeriod);
         }
     </script>
-
+    {% block head %}
+    {% endblock %}
 </head>
-<body onload="timedRefresh(5000);">
+<body>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -50,8 +51,8 @@
             <ul class="nav">
               <li><a href="/">Home</a></li>
               <li><a href="/all">All sensors</a></li>
+              <li><a href="/charts">Charts</a></li>
               <li><a href="/info">System info</a></li>
-              <!-- <li><a href="#contact">Contact</a></li> -->
             </ul>
           </div><!--/.nav-collapse -->
         </div>

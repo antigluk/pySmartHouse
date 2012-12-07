@@ -25,7 +25,7 @@ def acpi():
                 for feature in sensor:
                     print "%s: %s=%s" % (sensor.prefix, feature.name, feature.get_value())
 
-                db[sensor.prefix][time()] = \
+                db[sensor.prefix][int(time())] = \
                     [(feature.name, feature.get_value()) for feature in sensor]
 
             sleep(2)
