@@ -44,10 +44,13 @@ def get_info(wide=False):
     if os.path.exists(MSP430SERIAL):
         f.update({"msp430" : {"port": MSP430SERIAL}})
     if wide:
-        f.update({
-                "ifconfig" : sh.ifconfig(),
-                "route" : sh.route(),
-            })
+        try:
+          f.update({
+                  "ifconfig" : sh.Command("/sbin/ifconfig")(),
+                  "route" : sh.Command("/sbin/route")(),
+              })
+        except:
+          pass
     return f
 
 @app.route("/all")
