@@ -19,7 +19,8 @@
             <div class="accordion-inner">
               <table class="table table-striped">
               {% for value in sensor.data %}
-                  <tr> <td width="33%">{{ value[0] }}</td> <td>{{ value[1] }} </td>
+                  <tr> <td width="33%"><a href="{{ url_for('chart', device="sensor_"+sensor.name, sensor=value[0]) }}">
+                    {{ value[0] }}</td> <td>{{ value[1] }} </td>
               {% endfor %}
               </table>
             </div>
