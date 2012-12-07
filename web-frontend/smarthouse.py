@@ -104,7 +104,7 @@ def chart(device, sensor):
         # print d
         data = [[(d[0][1][n][0], (d[K*(N//C)][0],sum(row)/(1 if len(row)==0 else len(row)))) for n,row in
                 enumerate([[x[i][1] for x in [x[1] for x in d][(K*(N//C)):(K+1)*(N//C)]] for i in 
-                    xrange(len(d[0])+1)])] for K in xrange(C)]
+                    xrange(len(d[0][1]))])] for K in xrange(C)]
         # data = [sum(numpy.array(data[(i*(N/C)):((i+1)*(N/C))][1]))/(N/C) for i in xrange(C)]
         # data.reverse()
         print data
