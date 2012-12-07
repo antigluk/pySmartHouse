@@ -13,6 +13,8 @@ import socket
 import fcntl
 import struct
 
+from sqlite3dbm import sshelve as sqlite
+
 app = Flask(__name__)
 
 MSP430SERIAL = "/dev/ttyACM0"
@@ -60,9 +62,10 @@ def all_sensors():
         if not fnmatch.fnmatch(sensor, 'sensor_*'):
             continue
         file_name = os.path.join(LOG_PATH, sensor)
+
         if os.path.exists(file_name):
-            data = file(file_name).readlines()
-            sensors.append({"name":sensor[len("sensor_"):], "data":[line.strip().split("=") for line in data]})
+            data = sqlite.open(file_name).getlast()
+            sensors.append({"name":sensor[len("sensor_"):], "data":data})
 
     return render_template("all_sensors.html", data=sensors, info=get_info())
 
@@ -75,8 +78,8 @@ def index():
             continue
         file_name = os.path.join(LOG_PATH, sensor)
         if os.path.exists(file_name):
-            data = file(file_name).readlines()
-            sensors.update({sensor[len("sensor_"):]: dict([line.strip().split("=") for line in data])})
+            data = sqlite.open(file_name).getlast()
+            sensors.update({sensor[len("sensor_"):]: dict(data)})
 
     return render_template("index.html", data=sensors, info=get_info())
 
