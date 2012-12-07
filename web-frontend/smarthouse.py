@@ -97,7 +97,7 @@ def chart_sensors(device):
 def chart(device, sensor):
     file_name = os.path.join(LOG_PATH, device)
     if os.path.exists(file_name):
-        N = 1000
+        N = 5000
         C = 10
         d = sqlite.open(file_name).getlast(N)
         d += [d[-1][:] for x in xrange(N-len(d))]
