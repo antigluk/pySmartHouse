@@ -114,7 +114,7 @@ def chart(device, sensor):
             sensor_name=sensor,
             data={
                 'x':keys,
-                'y':[dict(v)[sensor][1] for v in data],
+                'y':[str(dict(v)[sensor][1])[:4] for v in data],
                   },
             info=get_info())
     # return render_template("chart.html", sensor={'name': device}, info=get_info())
