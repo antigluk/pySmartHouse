@@ -98,9 +98,9 @@ def chart(device, sensor):
     file_name = os.path.join(LOG_PATH, device)
     if os.path.exists(file_name):
         N = 3*60*60//2
-        C = 12
+        C = 10
         d = sqlite.open(file_name).getlast(N)
-        d += [d[-1][:] for x in xrange(N-len(d))]
+        d += [(d[-1][0],[(x[0],x[1]) for x in d[-1][1]]) for x in xrange(N-len(d))]
         # print d
         data = [[(d[0][1][n][0], (d[K*(N//C)][0],sum([float(o) for o in row])/(1 if len(row)==0 else len(row)))) for n,row in
                 enumerate([[x[i][1] for x in [x[1] for x in d][(K*(N//C)):(K+1)*(N//C)]] for i in 
