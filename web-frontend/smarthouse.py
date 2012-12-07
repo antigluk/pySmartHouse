@@ -4,6 +4,8 @@
 Front-end web application, shows sensors and allow some control
 """
 
+from __future__ import division
+
 from flask import Flask, render_template
 
 from watchd import LOG_PATH
@@ -14,6 +16,7 @@ import fnmatch
 import socket
 import fcntl
 import struct
+import numpy
 
 from sqlite3dbm import sshelve as sqlite
 
@@ -95,16 +98,24 @@ def chart_sensors(device):
 def chart(device, sensor):
     file_name = os.path.join(LOG_PATH, device)
     if os.path.exists(file_name):
-        data = sqlite.open(file_name).getlast(1000)[::100]
+        N = 1000
+        C = 10
+        d = sqlite.open(file_name).getlast(N)
+        d += [d[-1][:] for x in xrange(N-len(d))]
+        # print d
+        data = [[(d[0][1][n][0], (d[K*(N//C)][0],sum(row)/(1 if len(row)==0 else len(row)))) for n,row in
+                enumerate([[x[i][1] for x in [x[1] for x in d][(K*(N//C)):(K+1)*(N//C)]] for i in 
+                    xrange(len(d[0])+1)])] for K in xrange(C)]
+        # data = [sum(numpy.array(data[(i*(N/C)):((i+1)*(N/C))][1]))/(N/C) for i in xrange(C)]
         # data.reverse()
-        # print data
-        keys = [int(v[0]) for v in data]
+        print data
+        keys = [int(dict(v)[sensor][0]) for v in data]
         keys = ["-%d min" % ((v-min(keys))/60) for v in keys]
         return render_template("chart.html", device_name=device,
             sensor_name=sensor,
             data={
                 'x':keys,
-                'y':[dict(v[1])[sensor] for v in data],
+                'y':[dict(v)[sensor][1] for v in data],
                   },
             info=get_info())
     # return render_template("chart.html", sensor={'name': device}, info=get_info())
