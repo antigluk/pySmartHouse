@@ -26,7 +26,7 @@
 */
 
 #include <stdarg.h>
-#include "uart_fifo.h"			//Your UART header file
+#include "uart.h"			//Your UART header file
 #include "printf.h"
 
 
