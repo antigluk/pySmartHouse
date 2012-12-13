@@ -5,6 +5,7 @@
  *      Author: roma
  */
 #include <msp430g2553.h>
+#include "temp_internal.h"
 
 long temp;
 long IntDegF;

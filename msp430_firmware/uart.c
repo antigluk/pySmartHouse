@@ -22,7 +22,7 @@
 */
 
 #include "msp430g2553.h"
-#include "uart_fifo.h"
+#include "uart.h"
 
 #define RXL BIT0
 #define TXL BIT6

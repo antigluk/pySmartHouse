@@ -26,15 +26,16 @@
 //******************************************************************************
 #include  "msp430g2553.h"
 #include "printf.h"
-#include "uart_fifo.h"
-#include "temp.h"
+#include "uart.h"
+#include "temp_internal.h"
 #include "OneWire/onewire.h"
+#include "OneWire/delay.h"
 
-#define DOOR BIT7
+#define TEMP0 BIT7
 
 #define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
 
-void main(void)
+int main(void)
 {
   WDTCTL = WDTPW + WDTHOLD;                 // Stop WDT
   BCSCTL1 = CALBC1_8MHZ; 				//Set DCO to 8Mhz
@@ -43,17 +44,39 @@ void main(void)
   P2DIR = 0x00;
   P3DIR = 0x00;
 
+  onewire_t ow;
+  ow.port_out = &P1OUT;
+  ow.port_in = &P1IN;
+  ow.port_ren = &P1REN;
+  ow.port_dir = &P1DIR;
+  ow.pin = TEMP0;
+  uint8_t scratchpad[9];
+
   uart_init();
   __enable_interrupt();				//Interrupts Enabled
   temp_init();
 
   long Temp = 0;
   for(;;) {
-	char x = uart_getc();
+	uart_getc();
 	Temp = temp_measure();
-//	int D1 = CHECK_BIT(P1IN, 7);
-	uart_printf("T1\t%i;P1\t%i;P2\t%i;P3\t%i\n\r", Temp, P1IN, P2IN, P3IN);
-	__delay_cycles(5000000);
+
+	onewire_reset(&ow);
+	onewire_write_byte(&ow, 0xcc); // skip ROM command
+	onewire_write_byte(&ow, 0x44); // convert T command
+	onewire_line_high(&ow);
+	DELAY_MS(800); // at least 750 ms for the default 12-bit resolution
+	onewire_reset(&ow);
+	onewire_write_byte(&ow, 0xcc); // skip ROM command
+	onewire_write_byte(&ow, 0xbe); // read scratchpad command
+	int i;
+	for (i = 0; i < 9; i++) scratchpad[i] = onewire_read_byte(&ow);
+
+
+
+//	int D1 = CHECK_BIT(P1IN, BIT7);
+//	uart_printf("T1\t%i;P1\t%i;P2\t%i;P3\t%i\n\r", Temp, P1IN, P2IN, P3IN);
+	uart_printf("T1\t%i\n\r", Temp);
   }
-  return;
+  return 0;
 }
