@@ -38,6 +38,9 @@
 							<tool id="dk.xpg.msp430eclipse.tool.archiver.gcc.1020527762" name="MSP430 Archiver" superClass="dk.xpg.msp430eclipse.tool.archiver.gcc"/>
 						</toolChain>
 					</folderInfo>
+					<sourceEntries>
+						<entry excluding="OneWire/test.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
@@ -77,6 +80,9 @@
 							<tool id="dk.xpg.msp430eclipse.tool.archiver.gcc.529685231" name="MSP430 Archiver" superClass="dk.xpg.msp430eclipse.tool.archiver.gcc"/>
 						</toolChain>
 					</folderInfo>
+					<sourceEntries>
+						<entry excluding="OneWire/test.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>

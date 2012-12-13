@@ -28,6 +28,7 @@
 #include "printf.h"
 #include "uart_fifo.h"
 #include "temp.h"
+#include "OneWire/onewire.h"
 
 #define DOOR BIT7
 

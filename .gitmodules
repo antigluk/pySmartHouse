@@ -4,3 +4,6 @@
 [submodule "3rdparty/AwesomeChartJS"]
 	path = 3rdparty/AwesomeChartJS
 	url = https://github.com/cyberpython/AwesomeChartJS.git
+[submodule "msp430_firmware/OneWire"]
+	path = msp430_firmware/OneWire
+	url = https://github.com/dsiroky/OneWire.git
