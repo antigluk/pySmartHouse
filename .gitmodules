@@ -7,3 +7,6 @@
 [submodule "msp430_firmware/OneWire"]
 	path = msp430_firmware/OneWire
 	url = https://github.com/dsiroky/OneWire.git
+[submodule "resources"]
+	path = resources
+	url = git@github.com:antigluk/pySmartHouse-resources.git
