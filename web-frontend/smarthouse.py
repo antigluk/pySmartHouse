@@ -165,7 +165,7 @@ def sysinfo():
 def video():
     image = None
     if os.path.exists(IMG_LAST):
-        image = file(IMG_LAST).read()
+        image = file(IMG_LAST).read().strip()
 
     return render_template("video.html", info=get_info(wide=True),
                            img=image)
