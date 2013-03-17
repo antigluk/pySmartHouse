@@ -35,8 +35,16 @@ def photo():
                 # filename = "%s.jpg" % (
                 #     datetime.datetime.isoformat(datetime.datetime.now()))
                 filename = "lastimg.jpg"
-                sh.mv(filename, filename+".old")
-                sh.mv('00000001.jpg', filename)
+                try:
+                    sh.mv(filename, filename+".old")
+                except sh.ErrorReturnCode:
+                    pass
+
+                try:
+                    sh.mv('00000001.jpg', filename)
+                except sh.ErrorReturnCode:
+                    pass
+
                 print >>file(IMG_LAST, 'w'), filename
 
                 if RECORDING:
