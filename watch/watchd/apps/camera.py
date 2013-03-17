@@ -22,34 +22,37 @@ def photo():
 
     sh.mkdir('-p', IMG_DB)
     while True:
-        if not os.path.exists(DEVICE):
-            sleep(5)
-            continue
+        try:
+            if not os.path.exists(DEVICE):
+                sleep(5)
+                continue
 
-        print "Device %s found" % DEVICE
+            print "Device %s found" % DEVICE
 
-        while True:
-            sh.cd(IMG_PATH)
-            sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg", "-frames", "1", '-vf', 'scale=320:240')
-            # filename = "%s.jpg" % (
-            #     datetime.datetime.isoformat(datetime.datetime.now()))
-            filename = "lastimg.jpg"
-            sh.mv(filename, filename+".old")
-            sh.mv('00000001.jpg', filename)
-            print >>file(IMG_LAST, 'w'), filename
+            while True:
+                sh.cd(IMG_PATH)
+                sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg", "-frames", "1", '-vf', 'scale=320:240')
+                # filename = "%s.jpg" % (
+                #     datetime.datetime.isoformat(datetime.datetime.now()))
+                filename = "lastimg.jpg"
+                sh.mv(filename, filename+".old")
+                sh.mv('00000001.jpg', filename)
+                print >>file(IMG_LAST, 'w'), filename
 
-            if RECORDING:
-                filename_d = "%s.jpg" % (
-                             datetime.datetime.isoformat(datetime.datetime.now()))
-                sh.cp(filename, IMG_DB + filename_d)
+                if RECORDING:
+                    filename_d = "%s.jpg" % (
+                                 datetime.datetime.isoformat(datetime.datetime.now()))
+                    sh.cp(filename, IMG_DB + filename_d)
 
-                if time() - last_treshold > 30:
-                    RECORDING = False
+                    if time() - last_treshold > 30:
+                        RECORDING = False
 
-            k = sh.compare('-metric', 'AE', '-fuzz', '5%', 'lastimg.jpg',
-                           'lastimg.jpg.old', 'diff.jpg', _err_to_out=True)
-            if int(k) > 4000:
-                RECORDING = True
-                last_treshold = time()
+                k = sh.compare('-metric', 'AE', '-fuzz', '5%', 'lastimg.jpg',
+                               'lastimg.jpg.old', 'diff.jpg', _err_to_out=True)
+                if int(k) > 4000:
+                    RECORDING = True
+                    last_treshold = time()
 
-            # sleep(1)
+                # sleep(1)
+        except:
+            pass
