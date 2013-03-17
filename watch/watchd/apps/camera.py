@@ -47,7 +47,7 @@ def photo():
                     RECORDING = False
 
             k = sh.compare('-metric', 'AE', '-fuzz', '5%', 'lastimg.jpg',
-                           'lastimg.jpg.old')
+                           'lastimg.jpg.old', 'diff.jpg')
             if k > 2000:
                 RECORDING = True
                 last_treshold = time()
