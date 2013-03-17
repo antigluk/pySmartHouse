@@ -4,7 +4,11 @@
 
 {% block head %}
 <script>
-
+    $(document).ready(function() {
+        setInterval(function() {
+            $(photo)[0].src = "/static/{{ img }}" + new Date().getTime();
+        }, 1000);
+    })
 </script>
 {% endblock %}
 
@@ -18,7 +22,7 @@
   <div class="alert alert-success">Камера подключена к {{ info.video.port }} </div>
 
       {% if img %}
-      <img src="/static/{{ img }}" style="width:320px;height:240px" />
+      <img id="photo" src="/static/{{ img }}" style="width:320px;height:240px" />
       {% else %}
       Пока нету снимков.
       {% endif %}
