@@ -9,6 +9,13 @@
   <div class="alert alert-error">Похоже, msp430 не подключен...</div>
   {% endif %}
 
+  {% if "video" in info %}
+  <div class="alert alert-success">Камера подключена к {{ info.video.port }} </div>
+  {% else %}
+  <div class="alert alert-error">Похоже, камера не подключена...</div>
+  {% endif %}
+
+
   <div class="accordion" id="accordion2">
   {% for sensor in data %}
       <div class="accordion-group">

@@ -6,6 +6,7 @@ LOG_PATH_FORMAT = "%s/sensor_%%s" % LOG_PATH
 
 FUNC_PREFIX = "sensors_watch_process_"
 
+
 def sensor(f):
     def _sens():
         f()

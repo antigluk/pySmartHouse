@@ -6,6 +6,10 @@
   {% if "msp430" not in info %}
   <div class="alert alert-error">Похоже, внешние датчики не подключены...</div>
   {% endif %}
+  {% if "video" not in info %}
+  <div class="alert alert-error">Похоже, камера не подключена...</div>
+  {% endif %}
+
 
 <div class="well">
     Температура в подсобке: {% if "msp430" in data %} {{ data.msp430.T1 }}&deg;С {% else %} N/A {% endif %}
