@@ -52,4 +52,4 @@ def photo():
                 RECORDING = True
                 last_treshold = time()
 
-            sleep(1)
+            # sleep(1)
