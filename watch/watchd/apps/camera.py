@@ -25,7 +25,7 @@ def photo():
 
         while True:
             sh.cd(IMG_PATH)
-            sh.mplayer('tv:/%s' % DEVICE, '-vo jpeg', '-frames 1')
+            sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg", "-frames", "1")
             filename = "%s.jpg" % (
                 datetime.datetime.isoformat(datetime.datetime.now()))
             sh.mv('00000001.jpg', filename)
