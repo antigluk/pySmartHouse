@@ -30,7 +30,7 @@ def photo():
 
         while True:
             sh.cd(IMG_PATH)
-            sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg", "-frames", "1")
+            sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg", "-frames", "1", '-vf', 'scale=320:240')
             # filename = "%s.jpg" % (
             #     datetime.datetime.isoformat(datetime.datetime.now()))
             filename = "lastimg.jpg"
@@ -43,7 +43,7 @@ def photo():
                              datetime.datetime.isoformat(datetime.datetime.now()))
                 sh.cp(filename, IMG_DB + filename_d)
 
-                if time() - last_treshold > 10:
+                if time() - last_treshold > 30:
                     RECORDING = False
 
             k = sh.compare('-metric', 'AE', '-fuzz', '5%', 'lastimg.jpg',
