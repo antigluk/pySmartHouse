@@ -4,7 +4,7 @@ Daemon watching for sensors
 
 from multiprocessing import Process
 
-SENSORS = ["acpi", "msp430"]
+SENSORS = ["acpi", "msp430", "camera"]
 
 import os
 import sys
