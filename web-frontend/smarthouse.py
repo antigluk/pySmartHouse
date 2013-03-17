@@ -25,6 +25,7 @@ app = Flask(__name__)
 
 MSP430SERIAL = "/dev/ttyACM0"
 VIDEO_DEVICE = "/dev/video0"
+IMG_LAST = '/home/aiko/pysmarthouse/resources/static/lastimg.dat'
 
 
 def get_ip_address(ifname):
@@ -162,7 +163,12 @@ def sysinfo():
 @app.route("/video")
 @requires_auth
 def video():
-    return render_template("video.html", info=get_info(wide=True))
+    image = None
+    if os.path.exists(IMG_LAST):
+        image = file(IMG_LAST).read()
+
+    return render_template("video.html", info=get_info(wide=True),
+                           img=image)
 
 
 if __name__ == "__main__":

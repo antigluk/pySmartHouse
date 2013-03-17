@@ -7,11 +7,12 @@ from watchd import LOG_PATH_FORMAT
 
 from sqlite3dbm import sshelve as sqlite
 
-"""
-MSP430 sensors (e.g., external temperature)
-"""
+
 @sensor
 def msp430():
+    """
+    MSP430 sensors (e.g., external temperature)
+    """
     prefix = "msp430"
     while True:
         try:

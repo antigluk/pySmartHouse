@@ -7,11 +7,12 @@ from watchd import LOG_PATH_FORMAT
 
 from sqlite3dbm import sshelve as sqlite
 
-"""
-ACPI sensors (e.g., computer internal temperature)
-"""
+
 @sensor
 def acpi():
+    """
+    ACPI sensors (e.g., computer internal temperature)
+    """
     sensors.init()
     print "ACPI Sensors found: %s" % list(sensors.iter_detected_chips())
 
