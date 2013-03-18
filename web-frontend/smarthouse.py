@@ -166,7 +166,7 @@ def video():
     image = None
     if os.path.exists(IMG_LAST):
         # image = file(IMG_LAST).read().strip()
-        image = "lastimg.jpg"
+        image = "lastimg.jpg.old"
 
     return render_template("video.html", info=get_info(wide=True),
                            img=image)

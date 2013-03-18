@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'vagrant-vbguest'
+#require 'vagrant-hostmaster'
+
+Vagrant::Config.run do |config|
+  config.vm.box = "debian-smarthouse"
+
+  config.vm.boot_mode = :gui
+
+  config.vm.network :hostonly, :dhcp, :ip => "192.168.23.1", :adapter => 2
+
+  config.vm.provision :puppet, :options => "--verbose" do |puppet|
+    puppet.manifests_path = "manifests"
+    puppet.manifest_file  = "sh.pp"
+  end
+
+  config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
+  config.vm.customize ["modifyvm", :id, "--name", "SmartHouse 502", "--groups", "/SmartHouse502"]
+end

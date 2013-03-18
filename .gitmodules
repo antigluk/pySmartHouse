@@ -1,6 +1,6 @@
 [submodule "3rdparty/sqlite3dbm"]
 	path = 3rdparty/sqlite3dbm
-	url = git://github.com/antigluk/pySmartHouse.git
+	url = git@github.com:antigluk/sqlite3dbm.git
 [submodule "3rdparty/AwesomeChartJS"]
 	path = 3rdparty/AwesomeChartJS
 	url = https://github.com/cyberpython/AwesomeChartJS.git
