@@ -1,4 +1,4 @@
 #!/bin/bash
 
-mkdir /tmp/smarthouse
-/home/aiko/frontend/.env/bin/python /home/aiko/watchd/watch.py >> ~/watch.log &
+mkdir  -p /tmp/smarthouse
+/home/aiko/frontend/.env/bin/python /home/aiko/watchd/watch.py >> /tmp/smarthouse/watch.log &
