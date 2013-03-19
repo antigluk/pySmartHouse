@@ -87,6 +87,10 @@ def photo():
                     sh.mv(files[-1], filename)
                 except sh.ErrorReturnCode:
                     pass
+                except IndexError:
+                    print "[%s] No images yet"
+                    sleep(2)
+                    continue
 
                 print "[%s] Photo" % time()
 
