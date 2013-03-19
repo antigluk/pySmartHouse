@@ -21,9 +21,12 @@ def mplayer():
 
 
 def cleaner():
+    sh.cd(IMG_PATH)
     while True:
-        sh.cd(IMG_PATH)
-        sh.rm("*.jpg")
+        try:
+            sh.rm("*.jpg")
+        except sh.ErrorReturnCode:
+            pass
         sleep(60)
 
 
