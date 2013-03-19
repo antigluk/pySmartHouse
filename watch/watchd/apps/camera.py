@@ -33,7 +33,7 @@ def photo():
 
             while True:
                 sh.cd(IMG_PATH)
-                sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg", "-frames", "1", '-vf', 'scale=640:480')
+                sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg:quality=100", "-frames", "1") # '-vf', 'scale=640:480'
                 # filename = "%s.jpg" % (
                 #     datetime.datetime.isoformat(datetime.datetime.now()))
                 filename = "lastimg.jpg"
@@ -63,7 +63,7 @@ def photo():
                 k = sh.compare('-metric', 'AE', '-fuzz', '5%', 'lastimg.jpg',
                                'lastimg.jpg.old', 'diff.jpg', _err_to_out=True)
                 if int(k) > 1000:
-                    print "[%s] Found motion!!" % time()
+                    print "[%s] Found motion!! k=%s" % (time(), k)
                     RECORDING = True
                     last_treshold = time()
 
