@@ -20,7 +20,7 @@ def mplayer():
     sh.cd(IMG_PATH)
     while True:
         sh.rm('-f', glob.glob("[0-9]*.jpg"))
-        sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg:quality=100", '-vf', 'scale=640:480', '-fps', '1')
+        sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg:quality=100", '-vf', 'scale=320:240', '-fps', '2')
 
 
 def cleaner():
