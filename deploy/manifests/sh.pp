@@ -1,4 +1,4 @@
-Exec { path => [ "/bin/", "/sbin/", "/usr/bin/", "/usr/sbin/" ] }
+Exec { path => [ "/bin/", "/sbin/", "/usr/bin/", "/usr/sbin/", "/usr/local/bin/" ] }
 
 define line($file, $line, $ensure = 'present') {
     case $ensure {
@@ -65,13 +65,44 @@ class smarthouse {
         require => User[aiko],
     }
 
+
+    include frontend
 }
 
 class frontend {
+    include smarthouse
+
     file { '/home/aiko/frontend':
         ensure => link,
         target => '/home/aiko/pySmartHouse/web-frontend',
+        require => Class['smarthouse'],
     }
+
+    package { 'python-pip':
+        ensure => installed,
+    }
+
+    exec {'virtualenv':
+        command => 'pip install virtualenv',
+        require => package['python-pip'],
+    }
+
+    exec {'env':
+        command => 'virtualenv /home/aiko/pySmartHouse/web-frontend/.env',
+        require => Exec['virtualenv'],
+        onlyif => 'test ! -d /home/aiko/pySmartHouse/web-frontend/.env',
+    }
+
+    exec {'pip install':
+        command => '/home/aiko/pySmartHouse/web-frontend/.env/bin/pip install flask sh',
+        require => Exec['env'],
+    }
+
+    exec {'sqlite3dbm':
+        command => '/home/aiko/pySmartHouse/web-frontend/.env/bin/pip install -e /home/aiko/pySmartHouse/3rdparty/sqlite3dbm',
+        require => [Exec['env'], Class['smarthouse']],
+    }
+
 }
 
-include smarthouse
+include frontend

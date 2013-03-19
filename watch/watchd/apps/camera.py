@@ -31,7 +31,7 @@ def photo():
 
             while True:
                 sh.cd(IMG_PATH)
-                sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg", "-frames", "1", '-vf', 'scale=320:240')
+                sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg", "-frames", "1", '-vf', 'scale=640:480')
                 # filename = "%s.jpg" % (
                 #     datetime.datetime.isoformat(datetime.datetime.now()))
                 filename = "lastimg.jpg"

@@ -2,3 +2,5 @@ Host github.com
     HostName github.com
     User git
     IdentityFile ~/.ssh/smarthouse
+    UserKnownHostsFile=/dev/null
+    StrictHostKeyChecking=no
