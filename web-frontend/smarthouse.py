@@ -167,7 +167,7 @@ def video():
     image = None
     if os.path.exists(IMG_LAST):
         # image = file(IMG_LAST).read().strip()
-        image = "lastimg.jpg.old"
+        image = "lastimg.jpg"
 
     enabled = os.path.exists(VIDEO_ENABLED_FILE)
 
