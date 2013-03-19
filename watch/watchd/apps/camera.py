@@ -52,7 +52,7 @@ def photo():
             if not os.path.exists(ENABLED_FILE):
                 print "[%s] Camera still disabled..." % time()
                 sleep(5)
-                break
+                continue
 
             print "Device %s found" % DEVICE
 
