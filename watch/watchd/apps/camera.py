@@ -109,7 +109,9 @@ def photo():
                     last_treshold = time()
 
                 # sleep(1)
-        except:
+        except Exception, e:
+            print "[%s] Exception... shutting down. %s %s" % \
+                (time(), e.__class__.__name__, e.message)
             mplayer_p.terminate()
             cleaner_p.terminate()
             sleep(1)
