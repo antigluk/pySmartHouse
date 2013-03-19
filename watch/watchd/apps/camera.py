@@ -102,15 +102,15 @@ def photo():
                                  datetime.datetime.isoformat(datetime.datetime.now()))
                     sh.cp(filename, IMG_DB + filename_d)
 
-                    if time() - last_treshold > 30:
+                    if time() - last_treshold > 15:
                         RECORDING = False
-
-                k = sh.compare('-metric', 'AE', '-fuzz', '15%', 'lastimg.jpg',
-                               'lastimg.jpg.old', 'diff.jpg', _err_to_out=True)
-                if int(k) > 1500:
-                    print "[%s] Found motion!! k=%s" % (time(), k)
-                    RECORDING = True
-                    last_treshold = time()
+                else:
+                    k = sh.compare('-metric', 'AE', '-fuzz', '15%', 'lastimg.jpg',
+                                   'lastimg.jpg.old', 'diff.jpg', _err_to_out=True)
+                    if int(k) > 1500:
+                        print "[%s] Found motion!! k=%s" % (time(), k)
+                        RECORDING = True
+                        last_treshold = time()
 
                 # sleep(1)
         except Exception, e:
