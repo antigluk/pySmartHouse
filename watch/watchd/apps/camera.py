@@ -17,12 +17,14 @@ def photo():
     """
     Take photo
     """
+    print "Camera daemon started"
     RECORDING = False
     last_treshold = 0
 
     sh.mkdir('-p', IMG_DB)
     while True:
         try:
+            print "Looking up for %s" % DEVICE
             if not os.path.exists(DEVICE):
                 sleep(5)
                 continue
