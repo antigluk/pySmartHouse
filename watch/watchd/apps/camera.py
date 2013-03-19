@@ -19,7 +19,7 @@ ENABLED_FILE = '/home/aiko/camera_enabled.marker'
 def mplayer():
     sh.cd(IMG_PATH)
     while True:
-        sh.rm('-f', "[0-9]*.jpg")
+        sh.rm('-f', glob.glob("[0-9]*.jpg"))
         sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg:quality=100", '-vf', 'scale=640:480', '-fps', '1')
 
 
@@ -27,7 +27,7 @@ def cleaner():
     sh.cd(IMG_PATH)
     while True:
         try:
-            sh.rm('-f', "[0-9]*.jpg")
+            sh.rm('-f', glob.glob("[0-9]*.jpg"))
         except sh.ErrorReturnCode:
             pass
         sleep(10)
@@ -88,7 +88,7 @@ def photo():
                 except sh.ErrorReturnCode:
                     pass
                 except IndexError:
-                    print "[%s] No images yet"
+                    print "[%s] No images yet" % time()
                     sleep(2)
                     continue
 
