@@ -24,10 +24,10 @@ def cleaner():
     sh.cd(IMG_PATH)
     while True:
         try:
-            sh.rm("*.jpg")
+            sh.rm("[0-9]*.jpg")
         except sh.ErrorReturnCode:
             pass
-        sleep(60)
+        sleep(10)
 
 
 @sensor
