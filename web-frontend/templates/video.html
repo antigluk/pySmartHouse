@@ -25,6 +25,12 @@
               console.log('video disabled');
             }
         });
+
+        {% if {{ img }} %}
+        $('#video-toggle').bootstrapSwitch('setActive', true);
+        {% else %}
+        $('#video-toggle').bootstrapSwitch('setActive', false);
+        {% endif %}
     })
 </script>
 {% endblock %}
