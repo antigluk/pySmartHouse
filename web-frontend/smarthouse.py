@@ -6,7 +6,7 @@ Front-end web application, shows sensors and allow some control
 
 from __future__ import division
 
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 
 from watchd import LOG_PATH
 
@@ -26,6 +26,7 @@ app = Flask(__name__)
 MSP430SERIAL = "/dev/ttyACM0"
 VIDEO_DEVICE = "/dev/video0"
 IMG_LAST = '/home/aiko/pysmarthouse/resources/static/lastimg.dat'
+VIDEO_ENABLED_FILE = "/home/aiko/camera_enabled.marker"
 
 
 def get_ip_address(ifname):
@@ -168,8 +169,24 @@ def video():
         # image = file(IMG_LAST).read().strip()
         image = "lastimg.jpg.old"
 
+    enabled = os.path.exists(VIDEO_ENABLED_FILE)
+
     return render_template("video.html", info=get_info(wide=True),
-                           img=image)
+                           img=image, enabled=enabled)
+
+
+@app.route("/video/disable")
+@requires_auth
+def disable_video():
+    sh.rm('-f', VIDEO_ENABLED_FILE)
+    return redirect('/video')
+
+
+@app.route("/video/enable")
+@requires_auth
+def enable_video():
+    sh.touch(VIDEO_ENABLED_FILE)
+    return redirect('/video')
 
 
 if __name__ == "__main__":

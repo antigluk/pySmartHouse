@@ -3,11 +3,28 @@
 {% block title %}Video - {% endblock %}
 
 {% block head %}
+<link href="/static/css/bootstrapSwitch.css" rel="stylesheet">
+<script src="/static/js/bootstrapSwitch.js"></script>
+
+
 <script>
     $(document).ready(function() {
         setInterval(function() {
             $(photo)[0].src = "/static/{{ img }}#" + new Date().getTime();
         }, 2000);
+
+        // $('#video-toggle').bootstrapSwitch('toggleActivation');
+        $('#video-toggle').on('switch-change', function (e, data) {
+            var $el = $(data.el)
+              , value = data.value;
+            if (value) {
+              $.get('/video/enable');
+              console.log('video enabled');
+            } else {
+              $.get('/video/disable');
+              console.log('video disabled');
+            }
+        });
     })
 </script>
 {% endblock %}
@@ -21,16 +38,14 @@
   
   <div class="alert alert-success">Камера подключена к {{ info.video.port }} </div>
 
-      {% if img %}
-      <img id="photo" src="/static/{{ img }}" style="width:320px;height:240px" />
-      {% else %}
-      Пока нету снимков.
-      {% endif %}
-  
+      <div id="video-toggle" class="switch">
+          <input type="checkbox" checked="checked">
+      </div>
+      <br /><br />
+      <img id="photo" src="/static/{{ img }}" style="width:320px;height:240px" alt="Пока нет снимков"/>
 
  <!-- <embed src="http://aiko.home:8090/test.swf" width="550" height="400"></embed>. -->
 
   {% endif %}
-
 
 {% endblock %}
