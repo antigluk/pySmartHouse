@@ -51,11 +51,14 @@ def photo():
 
             mplayer_p = Process(target=mplayer)
             mplayer_p.start()
+            print "mplayer started"
 
             cleaner_p = Process(target=cleaner)
             cleaner_p.start()
+            print "cleaner started"
 
             while True:
+                sh.cd(IMG_PATH)
                 filename = "lastimg.jpg"
                 try:
                     sh.mv(filename, filename+".old")
@@ -63,7 +66,7 @@ def photo():
                     pass
 
                 try:
-                    files = glob.glob("*.jpg")
+                    files = glob.glob("[0-9]*.jpg")
                     files.sort()
                     sh.mv(files[-1], filename)
                 except sh.ErrorReturnCode:
