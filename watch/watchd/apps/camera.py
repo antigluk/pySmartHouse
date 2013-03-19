@@ -1,6 +1,9 @@
 from time import sleep, time
 import os
 import datetime
+import glob
+
+from multiprocessing import Process
 
 import sh
 
@@ -10,6 +13,18 @@ DEVICE = '/dev/video0'
 IMG_PATH = '/home/aiko/pysmarthouse/resources/static/'
 IMG_LAST = '/home/aiko/pysmarthouse/resources/static/lastimg.dat'
 IMG_DB = '/home/aiko/diff/'
+
+
+def mplayer():
+    sh.cd(IMG_PATH)
+    sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg:quality=100", '-vf', 'scale=640:480', '-fps', '1')
+
+
+def cleaner():
+    while True:
+        sh.cd(IMG_PATH)
+        sh.rm("*.jpg")
+        sleep(60)
 
 
 @sensor
@@ -31,11 +46,13 @@ def photo():
 
             print "Device %s found" % DEVICE
 
+            mplayer_p = Process(target=mplayer)
+            mplayer_p.start()
+
+            cleaner_p = Process(target=cleaner)
+            cleaner_p.start()
+
             while True:
-                sh.cd(IMG_PATH)
-                sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg:quality=100", "-frames", "1") # '-vf', 'scale=640:480'
-                # filename = "%s.jpg" % (
-                #     datetime.datetime.isoformat(datetime.datetime.now()))
                 filename = "lastimg.jpg"
                 try:
                     sh.mv(filename, filename+".old")
@@ -43,7 +60,9 @@ def photo():
                     pass
 
                 try:
-                    sh.mv('00000001.jpg', filename)
+                    files = glob.glob("*.jpg")
+                    files.sort()
+                    sh.mv(files[-1], filename)
                 except sh.ErrorReturnCode:
                     pass
 
@@ -60,7 +79,7 @@ def photo():
                     if time() - last_treshold > 30:
                         RECORDING = False
 
-                k = sh.compare('-metric', 'AE', '-fuzz', '5%', 'lastimg.jpg',
+                k = sh.compare('-metric', 'AE', '-fuzz', '15%', 'lastimg.jpg',
                                'lastimg.jpg.old', 'diff.jpg', _err_to_out=True)
                 if int(k) > 1000:
                     print "[%s] Found motion!! k=%s" % (time(), k)
@@ -69,4 +88,5 @@ def photo():
 
                 # sleep(1)
         except:
-            pass
+            mplayer_p.terminate()
+            cleaner_p.terminate()
