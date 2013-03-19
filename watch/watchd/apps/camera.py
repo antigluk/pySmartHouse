@@ -18,8 +18,9 @@ ENABLED_FILE = '/home/aiko/camera_enabled.marker'
 
 def mplayer():
     sh.cd(IMG_PATH)
-    sh.rm('-f', "[0-9]*.jpg")
-    sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg:quality=100", '-vf', 'scale=640:480', '-fps', '1')
+    while True:
+        sh.rm('-f', "[0-9]*.jpg")
+        sh.mplayer("timeout 20 tv:/%s" % DEVICE, "-vo", "jpeg:quality=100", '-vf', 'scale=640:480', '-fps', '1')
 
 
 def cleaner():
@@ -111,3 +112,4 @@ def photo():
         except:
             mplayer_p.terminate()
             cleaner_p.terminate()
+            sleep(1)
