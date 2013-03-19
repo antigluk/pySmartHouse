@@ -12,6 +12,7 @@ FUNC_PREFIX = "sensors_watch_process_"
 def sensor(f):
     def _sens():
         sys.stdout = open("%s/%s.log" % (LOG_PATH, f.func_name), "a+")
+        sys.stderr = open("%s/%s.log" % (LOG_PATH, f.func_name), "a+")
         print "%s started" % f.func_name
         f()
 
