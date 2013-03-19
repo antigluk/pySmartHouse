@@ -47,9 +47,12 @@ def photo():
                 except sh.ErrorReturnCode:
                     pass
 
+                print "[%s] Photo" % time()
+
                 print >>file(IMG_LAST, 'w'), filename
 
                 if RECORDING:
+                    print "[%s] Recording..." % time()
                     filename_d = "%s.jpg" % (
                                  datetime.datetime.isoformat(datetime.datetime.now()))
                     sh.cp(filename, IMG_DB + filename_d)
@@ -60,6 +63,7 @@ def photo():
                 k = sh.compare('-metric', 'AE', '-fuzz', '5%', 'lastimg.jpg',
                                'lastimg.jpg.old', 'diff.jpg', _err_to_out=True)
                 if int(k) > 1000:
+                    print "[%s] Found motion!!" % time()
                     RECORDING = True
                     last_treshold = time()
 
