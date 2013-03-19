@@ -17,7 +17,7 @@ IMG_DB = '/home/aiko/diff/'
 
 def mplayer():
     sh.cd(IMG_PATH)
-    sh.rm("[0-9]*.jpg")
+    sh.rm('-f', "[0-9]*.jpg")
     sh.mplayer("tv:/%s" % DEVICE, "-vo", "jpeg:quality=100", '-vf', 'scale=640:480', '-fps', '1')
 
 
