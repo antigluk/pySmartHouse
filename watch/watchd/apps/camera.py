@@ -112,7 +112,7 @@ def photo():
                     pass
                 except IndexError:
                     print "[%s] No images yet" % time()
-                    # sleep(2)
+                    sleep(0.5)
                     continue
 
                 print "[%s] Photo" % time()
