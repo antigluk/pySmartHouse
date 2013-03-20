@@ -51,7 +51,7 @@ def photo():
     Take photo
     """
     print "Camera daemon started"
-    signal.signal(signal.SIGTERM, kill_handler)
+    # signal.signal(signal.SIGTERM, kill_handler)
     RECORDING = False
     last_treshold = 0
     lastname = None
