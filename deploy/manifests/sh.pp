@@ -22,8 +22,28 @@ define line($file, $line, $ensure = 'present') {
     }
 }
 
+class repo {
+    include smarthouse
+
+    exec { 'repo-clone':
+        command => "sudo -u aiko git clone git://github.com/antigluk/pySmartHouse.git",
+        cwd     => "/home/aiko",
+        require => [User['aiko'], Package['git']],
+        onlyif => "test ! -d /home/aiko/pySmartHouse",
+    }
+
+    exec { 'repo-pull':
+        command => "sudo -u aiko git pull origin master",
+        cwd     => "/home/aiko/pySmartHouse",
+        require => [User['aiko'], Package['git']],
+        unless => "test ! -d /home/aiko/pySmartHouse",
+        notify => Service['smarthouse'],
+    }
+}
 
 class smarthouse {
+    include repo
+
     user { 'aiko':
         ensure => present,
         managehome => true,
@@ -40,17 +60,10 @@ class smarthouse {
         ensure => installed,
     }
 
-    exec { 'repo':
-        command => "sudo -u aiko git clone git://github.com/antigluk/pySmartHouse.git",
-        cwd     => "/home/aiko",
-        require => [User['aiko'], Package['git']],
-        onlyif => "test ! -d /home/aiko/pySmartHouse",
-    }
-
     exec { 'submodules':
         command => "sudo -u aiko git submodule update --init",
         cwd     => "/home/aiko/pySmartHouse",
-        require => Exec['repo'],
+        require => Class['repo'],
     }
 
     exec { 'aiko-pass':
