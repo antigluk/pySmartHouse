@@ -91,6 +91,10 @@ class smarthouse {
         ensure => installed,
     }
 
+    package { 'imagemagick':
+        ensure => installed,
+    }
+
     include frontend
 }
 

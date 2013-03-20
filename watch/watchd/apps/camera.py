@@ -55,6 +55,8 @@ def photo():
     RECORDING = False
     last_treshold = 0
     lastname = None
+    cleaner_p = None
+    mplayer_p = None
 
     sh.mkdir('-p', IMG_DB)
     while True:
@@ -103,6 +105,7 @@ def photo():
                     files = glob.glob("[0-9]*.jpg")
                     files.sort()
                     newname = files[-1]
+                    print "[%s] Photo" % time()
                     if lastname != newname:
                         sh.mv(newname, filename)
                         lastname = newname
@@ -114,8 +117,6 @@ def photo():
                     print "[%s] No images yet" % time()
                     sleep(0.5)
                     continue
-
-                print "[%s] Photo" % time()
 
                 print >>file(IMG_LAST, 'w'), filename
 
@@ -134,13 +135,16 @@ def photo():
                         print "[%s] Found motion!! k=%s" % (time(), k)
                         RECORDING = True
                         last_treshold = time()
+                    sleep(0.5)
 
                 # sleep(1)
         except Exception, e:
             print "[%s] Exception... shutting down. %s %s" % \
                 (time(), e.__class__.__name__, e.message)
-            mplayer_p.terminate()
-            cleaner_p.terminate()
-            processes.remove(mplayer_p)
-            processes.remove(cleaner_p)
+            if mplayer_p:
+                mplayer_p.terminate()
+                processes.remove(mplayer_p)
+            if cleaner_p:
+                cleaner_p.terminate()
+                processes.remove(cleaner_p)
             sleep(1)
