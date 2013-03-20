@@ -13,7 +13,9 @@ processes = []
 
 
 def kill_handler(signal, frame):
+    print "Killed. Terminating childs..."
     for p in processes:
+        print "kill %s" % p
         p.terminate()
     sys.exit(0)
 
