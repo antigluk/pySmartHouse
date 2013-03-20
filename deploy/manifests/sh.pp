@@ -101,26 +101,47 @@ class frontend {
         onlyif => 'test ! -d /home/aiko/pySmartHouse/web-frontend/.env',
     }
 
-/*    exec {'pip install':
-        command => '/home/aiko/pySmartHouse/web-frontend/.env/bin/pip install flask sh sensors',
-        require => Exec['env'],
+    package { 'lm-sensors':
+        ensure => installed,
     }
-*/
+
+    exec {'pip install':
+        command => '/home/aiko/pySmartHouse/web-frontend/.env/bin/pip install flask sh PySensors',
+        require => [Exec['env'], Package['lm-sensors']],
+    }
+
     exec {'sqlite3dbm':
         command => '/home/aiko/pySmartHouse/web-frontend/.env/bin/pip install -e /home/aiko/pySmartHouse/3rdparty/sqlite3dbm',
         require => [Exec['env'], Class['smarthouse']],
     }
 
 
-    /*package { 'apache2':
+    package {'libapache2-mod-wsgi':
         ensure => installed,
     }
 
-    file { '/etc/apache2/'
+    package { 'apache2':
+        ensure => installed,
+        require => Package['libapache2-mod-wsgi']
+    }
+
+    file { 'apache-site':
+        path => '/etc/apache2/sites-available/smarthouse',
         ensure => file,
         content => template('/vagrant/smarthouse.apacheconf'),
         require => Package['apache2'],
-    } */
+    }
+
+    exec {'a2ensite smarthouse':
+        require => File['apache-site'],
+        notify => Service['apache2'],
+    }
+
+    service { 'apache2':
+        ensure => running,
+        enable => true,
+        require => Package['apache2'],
+    }
 
     file { '/etc/smarthouse.conf':
         ensure => file,
@@ -141,10 +162,17 @@ class watchd {
         target => '/home/aiko/pySmartHouse/watch/watchd',
     }
 
-    file { '/etc/init.d/smarthouse':
+    file { 'init-smarthouse':
+        path => '/etc/init.d/smarthouse',
         ensure => file,
         content => template('/vagrant/smarthouse'),
         mode => 0755,
+    }
+
+    service { 'smarthouse':
+        ensure => running,
+        enable => true,
+        require => File['init-smarthouse'],
     }
 
 }

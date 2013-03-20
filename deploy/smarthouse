@@ -19,15 +19,15 @@ do_start () {
 	echo $! > /var/run/smarthouse-watchd.pid
 
 #TODO!! add nohup
-	/home/aiko/frontend/.env/bin/python /home/aiko/frontend/smarthouse.py >> /var/log/smarthouse.log &
-	echo $! > /var/run/smarthouse-frontend.pid
+	# /home/aiko/frontend/.env/bin/python /home/aiko/frontend/smarthouse.py >> /var/log/smarthouse.log &
+	# echo $! > /var/run/smarthouse-frontend.pid
 
 	echo 1 > /var/run/smarthouse.run
 }
 
 do_stop () {
 	kill `cat /var/run/smarthouse-watchd.pid` > /dev/null
-	kill `cat /var/run/smarthouse-frontend.pid` > /dev/null
+	# kill `cat /var/run/smarthouse-frontend.pid` > /dev/null
 	rm -f /var/run/smarthouse.run
 }
 
