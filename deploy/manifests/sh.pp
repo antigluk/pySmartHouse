@@ -87,6 +87,10 @@ class smarthouse {
         line => "iface eth1 inet dhcp",
     }
 
+    package { 'mplayer':
+        ensure => installed,
+    }
+
     include frontend
 }
 
