@@ -119,7 +119,7 @@ class frontend {
     }
 
     exec {'pip install':
-        command => '/home/aiko/pySmartHouse/web-frontend/.env/bin/pip install flask sh PySensors',
+        command => '/home/aiko/pySmartHouse/web-frontend/.env/bin/pip install flask sh PySensors pyserial',
         require => [Exec['env'], Package['lm-sensors']],
     }
 

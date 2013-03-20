@@ -9,7 +9,7 @@
 # Description:       sdsd
 ### END INIT INFO
 
-PATH=/sbin:/bin
+PATH=/sbin:/bin:/usr/bin
 
 . /lib/init/vars.sh
 . /lib/lsb/init-functions
