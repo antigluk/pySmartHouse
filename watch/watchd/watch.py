@@ -21,7 +21,10 @@ externals = {}
 
 import apps
 for s in SENSORS:
-    externals.update(__import__("watchd.apps.%s" % s, fromlist=["apps"]).__dict__)
+    try:
+        externals.update(__import__("watchd.apps.%s" % s, fromlist=["apps"]).__dict__)
+    except ImportError, e:
+        print "%s ImportError: %s" % (s, e.message)
 
 if __name__ == '__main__':
     # local = locals()

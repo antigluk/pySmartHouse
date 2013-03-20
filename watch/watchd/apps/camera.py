@@ -78,7 +78,7 @@ def photo():
                     break
 
                 try:
-                    sh.cp('-f', filename, filename+".old")
+                    sh.cp('-f', filename, filename+".old.jpg")
                 except sh.ErrorReturnCode:
                     pass
 
@@ -112,7 +112,7 @@ def photo():
                         RECORDING = False
                 else:
                     k = sh.compare('-metric', 'AE', '-fuzz', '15%', 'lastimg.jpg',
-                                   'lastimg.jpg.old', 'diff.jpg', _err_to_out=True)
+                                   'lastimg.jpg.old.jpg', 'diff.jpg', _err_to_out=True)
                     if int(k) > 1500:
                         print "[%s] Found motion!! k=%s" % (time(), k)
                         RECORDING = True

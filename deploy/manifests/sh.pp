@@ -65,6 +65,14 @@ class smarthouse {
         require => User[aiko],
     }
 
+    file { '/etc/udev/rules.d/70-persistent-net.rules':
+        ensure => directory,
+    }
+
+    line { network_hostonly:
+        file => "/etc/network/interfaces",
+        line => "iface eth1 inet dhcp",
+    }
 
     include frontend
 }
@@ -84,7 +92,7 @@ class frontend {
 
     exec {'virtualenv':
         command => 'pip install virtualenv',
-        require => package['python-pip'],
+        require => Package['python-pip'],
     }
 
     exec {'env':
@@ -93,16 +101,54 @@ class frontend {
         onlyif => 'test ! -d /home/aiko/pySmartHouse/web-frontend/.env',
     }
 
-    exec {'pip install':
-        command => '/home/aiko/pySmartHouse/web-frontend/.env/bin/pip install flask sh',
+/*    exec {'pip install':
+        command => '/home/aiko/pySmartHouse/web-frontend/.env/bin/pip install flask sh sensors',
         require => Exec['env'],
     }
-
+*/
     exec {'sqlite3dbm':
         command => '/home/aiko/pySmartHouse/web-frontend/.env/bin/pip install -e /home/aiko/pySmartHouse/3rdparty/sqlite3dbm',
         require => [Exec['env'], Class['smarthouse']],
     }
 
+
+    /*package { 'apache2':
+        ensure => installed,
+    }
+
+    file { '/etc/apache2/'
+        ensure => file,
+        content => template('/vagrant/smarthouse.apacheconf'),
+        require => Package['apache2'],
+    } */
+
+    file { '/etc/smarthouse.conf':
+        ensure => file,
+        content => template('/vagrant/smarthouse.conf'),
+    }
+
 }
 
+
+class watchd {
+    file { '/home/aiko/watch':
+        ensure => link,
+        target => '/home/aiko/pySmartHouse/watch',
+    }
+
+    file { '/home/aiko/watchd':
+        ensure => link,
+        target => '/home/aiko/pySmartHouse/watch/watchd',
+    }
+
+    file { '/etc/init.d/smarthouse':
+        ensure => file,
+        content => template('/vagrant/smarthouse'),
+        mode => 0755,
+    }
+
+}
+
+
 include frontend
+include watchd

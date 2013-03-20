@@ -1,0 +1,63 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          smarthouse
+# Required-Start:
+# Required-Stop:
+# Default-Start:     3
+# Default-Stop:
+# Short-Description: 
+# Description:       sdsd
+### END INIT INFO
+
+PATH=/sbin:/bin
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+do_start () {
+	bash /home/aiko/watch/watchd_sh >> /var/log/watch.log &
+	echo $! > /var/run/smarthouse-watchd.pid
+
+#TODO!! add nohup
+	/home/aiko/frontend/.env/bin/python /home/aiko/frontend/smarthouse.py >> /var/log/smarthouse.log &
+	echo $! > /var/run/smarthouse-frontend.pid
+
+	echo 1 > /var/run/smarthouse.run
+}
+
+do_stop () {
+	kill `cat /var/run/smarthouse-watchd.pid` > /dev/null
+	kill `cat /var/run/smarthouse-frontend.pid` > /dev/null
+	rm -f /var/run/smarthouse.run
+}
+
+do_status () {
+	if [ -f /var/run/smarthouse ] ; then
+		return 0
+	else
+		return 4
+	fi
+}
+
+case "$1" in
+  start|"")
+	do_start
+	;;
+  restart|reload|force-reload)
+	echo "Error: argument '$1' not supported" >&2
+	exit 3
+	;;
+  stop)
+	do_stop
+	;;
+  status)
+	do_status
+	exit $?
+	;;
+  *)
+	echo "Usage: $0 [start|stop]" >&2
+	exit 3
+	;;
+esac
+
+:
