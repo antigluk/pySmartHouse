@@ -105,7 +105,7 @@ def photo():
                     files = glob.glob("[0-9]*.jpg")
                     files.sort()
                     newname = files[-1]
-                    print "[%s] Photo" % time()
+                    print "[%s] Photo" % (time(), newname)
                     if lastname != newname:
                         sh.mv(newname, filename)
                         lastname = newname

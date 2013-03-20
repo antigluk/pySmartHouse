@@ -87,6 +87,10 @@ class smarthouse {
         line => "iface eth1 inet dhcp",
     }
 
+    package { 'libv4l-0':
+        ensure => installed,
+    }
+
     package { 'mplayer':
         ensure => installed,
     }

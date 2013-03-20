@@ -36,7 +36,11 @@
 {% endblock %}
 
 {% block content %}
-<h1>Видеонаблюдение</h1>
+<h1>Видеонаблюдение
+  <div id="video-toggle" class="switch">
+      <input type="checkbox" checked="checked">
+  </div>
+</h1>
 
   {% if "video" not in info %}
   <div class="alert alert-error">Похоже, камера не подключена...</div>
@@ -44,9 +48,6 @@
   
   <div class="alert alert-success">Камера подключена к {{ info.video.port }} </div>
 
-      <div id="video-toggle" class="switch">
-          <input type="checkbox" checked="checked">
-      </div>
       <br /><br />
       <img id="photo" src="/static/{{ img }}" style="width:320px;height:240px" alt="Пока нет снимков"/>
 
