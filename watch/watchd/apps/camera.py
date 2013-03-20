@@ -41,6 +41,7 @@ def photo():
     print "Camera daemon started"
     RECORDING = False
     last_treshold = 0
+    lastname = None
 
     sh.mkdir('-p', IMG_DB)
     while True:
@@ -84,12 +85,17 @@ def photo():
                 try:
                     files = glob.glob("[0-9]*.jpg")
                     files.sort()
-                    sh.mv(files[-1], filename)
+                    newname = files[-1]
+                    if lastname != newname:
+                        sh.mv(newname, filename)
+                        lastname = newname
+                    else:
+                        print "[%s] No images yet (copy)" % time()
                 except sh.ErrorReturnCode:
                     pass
                 except IndexError:
                     print "[%s] No images yet" % time()
-                    sleep(2)
+                    # sleep(2)
                     continue
 
                 print "[%s] Photo" % time()
