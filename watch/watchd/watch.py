@@ -37,7 +37,8 @@ for s in SENSORS:
 
 if __name__ == '__main__':
     # local = locals()
+    signal.signal(signal.SIGTERM, kill_handler)
     functions = filter(lambda x: hasattr(x[1], 'func_name'), externals.iteritems())
     f_sensors = filter(lambda x: x[1].func_name.startswith(watchd.FUNC_PREFIX), functions)
-    processes = [Process(target=func[1]).start() for func in f_sensors]
-    signal.signal(signal.SIGTERM, kill_handler)
+    processes = [Process(target=func[1]) for func in f_sensors]
+    [p.start() for p in processes]
