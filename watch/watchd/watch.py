@@ -38,4 +38,4 @@ if __name__ == '__main__':
     functions = filter(lambda x: hasattr(x[1], 'func_name'), externals.iteritems())
     f_sensors = filter(lambda x: x[1].func_name.startswith(watchd.FUNC_PREFIX), functions)
     processes = [Process(target=func[1]).start() for func in f_sensors]
-    signal.signal(signal.SIGINT, kill_handler)
+    signal.signal(signal.SIGTERM, kill_handler)
