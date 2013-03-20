@@ -78,7 +78,7 @@ def photo():
                     break
 
                 try:
-                    sh.mv(filename, filename+".old")
+                    sh.cp('-f', filename, filename+".old")
                 except sh.ErrorReturnCode:
                     pass
 
