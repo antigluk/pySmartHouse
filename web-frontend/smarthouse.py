@@ -164,10 +164,10 @@ def sysinfo():
 @app.route("/video")
 @requires_auth
 def video():
-    image = None
-    if os.path.exists(IMG_LAST):
+    # image = None
+    # if os.path.exists(IMG_LAST):
         # image = file(IMG_LAST).read().strip()
-        image = "lastimg.jpg.old.jpg"
+    image = "lastimg.jpg.old.jpg"
 
     enabled = os.path.exists(VIDEO_ENABLED_FILE)
 
