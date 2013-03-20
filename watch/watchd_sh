@@ -1,4 +1,5 @@
 #!/bin/bash
 
 mkdir  -p /tmp/smarthouse
-/home/aiko/frontend/.env/bin/python /home/aiko/watchd/watch.py
+nohup /home/aiko/frontend/.env/bin/python /home/aiko/watchd/watch.py >> /var/log/watch.log &
+echo $!

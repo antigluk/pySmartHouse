@@ -15,8 +15,8 @@ PATH=/sbin:/bin:/usr/bin
 . /lib/lsb/init-functions
 
 do_start () {
-	nohup bash /home/aiko/watch/watchd_sh >> /var/log/watch.log &
-	echo $! > /var/run/smarthouse-watchd.pid
+	PID=$(bash /home/aiko/watch/watchd_sh)
+	echo $PID > /var/run/smarthouse-watchd.pid
 
 	# /home/aiko/frontend/.env/bin/python /home/aiko/frontend/smarthouse.py >> /var/log/smarthouse.log &
 	# echo $! > /var/run/smarthouse-frontend.pid
