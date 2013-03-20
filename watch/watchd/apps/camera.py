@@ -1,7 +1,9 @@
 from time import sleep, time
 import os
+import sys
 import datetime
 import glob
+import signal
 
 from multiprocessing import Process
 
@@ -10,10 +12,20 @@ import sh
 from watchd import sensor
 
 DEVICE = '/dev/video0'
-IMG_PATH = '/home/aiko/pysmarthouse/resources/static/'
-IMG_LAST = '/home/aiko/pysmarthouse/resources/static/lastimg.dat'
+IMG_PATH = '/home/aiko/static'
+IMG_LAST = '/home/aiko/static/lastimg.dat'
 IMG_DB = '/home/aiko/diff/'
 ENABLED_FILE = '/home/aiko/camera_enabled.marker'
+
+processes = []
+
+
+def kill_handler(signal, frame):
+    print "Killed. Terminating childs..."
+    for p in processes:
+        print "kill %s" % p
+        p.terminate()
+    sys.exit(0)
 
 
 def mplayer():
@@ -39,6 +51,7 @@ def photo():
     Take photo
     """
     print "Camera daemon started"
+    signal.signal(signal.SIGTERM, kill_handler)
     RECORDING = False
     last_treshold = 0
     lastname = None
@@ -59,10 +72,12 @@ def photo():
             print "Device %s found" % DEVICE
 
             mplayer_p = Process(target=mplayer)
+            processes.append(mplayer_p)
             mplayer_p.start()
             print "mplayer started"
 
             cleaner_p = Process(target=cleaner)
+            processes.append(cleaner_p)
             cleaner_p.start()
             print "cleaner started"
 
@@ -74,6 +89,8 @@ def photo():
                     print "[%s] Camera disabled... shutting down" % time()
                     mplayer_p.terminate()
                     cleaner_p.terminate()
+                    processes.remove(mplayer_p)
+                    processes.remove(cleaner_p)
                     sh.rm('-f', filename)
                     break
 
@@ -124,4 +141,6 @@ def photo():
                 (time(), e.__class__.__name__, e.message)
             mplayer_p.terminate()
             cleaner_p.terminate()
+            processes.remove(mplayer_p)
+            processes.remove(cleaner_p)
             sleep(1)

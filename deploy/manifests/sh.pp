@@ -99,6 +99,12 @@ class frontend {
         require => Class['smarthouse'],
     }
 
+    file { '/home/aiko/static':
+        ensure => link,
+        target => '/home/aiko/pySmartHouse/resources/static',
+        require => Class['smarthouse'],
+    }
+
     package { 'python-pip':
         ensure => installed,
     }
